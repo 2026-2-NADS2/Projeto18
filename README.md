@@ -3,7 +3,10 @@
 Motor que lê **todas as regras reativas** de um sistema, monta um mapa de *quem
 reage ao quê* e aponta **onde duas regras vão brigar** — antes de dar problema.
 
-> TCC · Time: Pedro, Victor, André, Luiz, Nicolas · **Fase 1 (o motor, sem IA)**
+> TCC · Time: Pedro, Victor, André, Luiz, Nicolas · **Fase 1 (motor) + Fase 2 (IA)**
+>
+> 📄 **Status do projeto para o grupo:** [`docs/STATUS.md`](docs/STATUS.md) — o que já
+> fizemos, como rodar e o que falta.
 
 ## A ideia em uma frase
 
