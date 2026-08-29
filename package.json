@@ -1,0 +1,23 @@
+{
+  "name": "grafo-interacoes",
+  "version": "0.1.0",
+  "description": "O bug que ninguém escreveu — motor do Grafo de Interações (Fase 1, sem IA)",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "test": "node --test test/detector.test.ts test/adapter-postgres.test.ts test/adapter-node-events.test.ts test/adapter-java.test.ts test/adapter-python.test.ts test/adapter-csharp.test.ts test/agent-offline.test.ts test/agent-prompt.test.ts",
+    "report": "node src/cli/report.ts",
+    "report:pg": "node src/cli/report-postgres.ts",
+    "report:node": "node src/cli/report-node.ts",
+    "report:java": "node src/cli/report-code.ts java",
+    "report:python": "node src/cli/report-code.ts python",
+    "report:csharp": "node src/cli/report-code.ts csharp",
+    "explain": "node --env-file-if-exists=.env src/cli/explain.ts"
+  },
+  "dependencies": {
+    "pg": "^8.23.0"
+  }
+}

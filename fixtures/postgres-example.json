@@ -1,0 +1,54 @@
+[
+  {
+    "id": "trg_log_prev_total",
+    "name": "trg_log_prev_total",
+    "resource": "orders",
+    "event": "before update",
+    "reads": ["total"],
+    "writes": ["audit_prev_total"],
+    "order": 5,
+    "condition": "true",
+    "source": "postgres"
+  },
+  {
+    "id": "trg_apply_discount",
+    "name": "trg_apply_discount",
+    "resource": "orders",
+    "event": "before update",
+    "reads": ["subtotal", "customer_tier"],
+    "writes": ["total"],
+    "order": 10,
+    "condition": "NEW.customer_tier <> OLD.customer_tier",
+    "source": "postgres"
+  },
+  {
+    "id": "trg_apply_tax",
+    "name": "trg_apply_tax",
+    "resource": "orders",
+    "event": "before update",
+    "reads": ["subtotal"],
+    "writes": ["total"],
+    "order": 20,
+    "source": "postgres"
+  },
+  {
+    "id": "trg_set_updated_at",
+    "name": "trg_set_updated_at",
+    "resource": "orders",
+    "event": "before update",
+    "reads": [],
+    "writes": ["updated_at"],
+    "order": 40,
+    "source": "postgres"
+  },
+  {
+    "id": "trg_welcome_email",
+    "name": "trg_welcome_email",
+    "resource": "customers",
+    "event": "after insert",
+    "reads": ["email"],
+    "writes": ["welcome_sent_at"],
+    "order": 10,
+    "source": "postgres"
+  }
+]
