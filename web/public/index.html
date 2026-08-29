@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>shieldPy — Grafo de Interações</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header>
+    <h1>🛡️ shieldPy</h1>
+    <p class="tagline">Especialista Sênior em DevOps · diagnóstico de colisões em metadados</p>
+  </header>
+
+  <main>
+    <!-- ZONA 1: o ambiente a testar -->
+    <section class="panel" id="env-panel">
+      <h2>1 · O que testar</h2>
+
+      <div class="block">
+        <label>Exemplos prontos</label>
+        <div class="examples">
+          <button class="ex" data-ex="node">Microsserviços (Node)</button>
+          <button class="ex" data-ex="java">Java / Spring</button>
+          <button class="ex" data-ex="python">Python / Django</button>
+          <button class="ex" data-ex="csharp">.NET / MediatR</button>
+        </div>
+      </div>
+
+      <div class="block">
+        <label for="paste">Colar código</label>
+        <div class="paste-head">
+          <select id="lang">
+            <option value="ts">Node / TS (event bus)</option>
+            <option value="java">Java (Spring)</option>
+            <option value="py">Python (Django)</option>
+            <option value="cs">C# (MediatR)</option>
+          </select>
+        </div>
+        <textarea id="paste" placeholder="Cole aqui o código de um handler/listener..."></textarea>
+      </div>
+
+      <div class="block">
+        <label>Arrastar arquivos</label>
+        <div id="drop" class="drop">
+          Arraste arquivos <code>.java .py .cs .ts .js</code> ou <code>.json</code> aqui<br />
+          <small>ou <a href="#" id="pick">clique para escolher</a></small>
+          <input type="file" id="file-input" multiple hidden />
+        </div>
+        <ul id="file-list" class="file-list"></ul>
+      </div>
+
+      <button id="analyze" class="primary">Analisar</button>
+      <p id="analyze-msg" class="msg"></p>
+    </section>
+
+    <!-- ZONA 2: diagnóstico + conversa -->
+    <section class="panel" id="result-panel">
+      <h2>2 · Diagnóstico</h2>
+      <p id="summary" class="summary muted">Escolha um exemplo, cole código ou arraste arquivos e clique em <b>Analisar</b>.</p>
+      <div id="cards"></div>
+
+      <div id="chat-wrap" class="hidden">
+        <h2>3 · Conversar com o shieldPy</h2>
+        <p class="muted small">A IA só discute as colisões que o motor provou — ela não inventa bugs.</p>
+        <div id="chat" class="chat"></div>
+        <form id="chat-form" class="chat-form">
+          <input id="chat-input" type="text" autocomplete="off"
+                 placeholder="Pergunte algo sobre os achados... (ex.: por que a colisão em 'total' é crítica?)" />
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

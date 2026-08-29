@@ -112,3 +112,21 @@ Modos de execução:
   (`IA (Gemini)` ou `explicador offline`).
 
 Trocar de LLM = trocar só `src/agent/llm-*.ts`; o resto do sistema é agnóstico de IA.
+
+## Interface web — chat ancorado (shieldPy no navegador)
+
+Uma página onde qualquer pessoa fornece um ambiente (arrasta arquivos, cola código
+ou escolhe um exemplo), o **motor prova** as colisões, e **conversa com o shieldPy**
+sobre os achados — sempre preso aos fatos provados (a IA não inventa bugs).
+
+```bash
+npm run web       # sobe em http://localhost:3000 (lê .env se existir)
+```
+
+- **Zero-dependência:** servidor com o módulo `http` nativo + HTML/JS puro (`web/`).
+- **Chave segura:** o `GEMINI_API_KEY` fica só no servidor, nunca no navegador.
+  Sem chave, `/analyze` entrega o report determinístico e o chat responde em modo offline.
+- **Endpoints:** `POST /analyze` (roda o motor, abre a sessão) e `POST /chat`
+  (conversa multi-turno ancorada nas colisões provadas).
+
+Plano de arquitetura e faseamento em [`docs/PLANO-WEB.md`](docs/PLANO-WEB.md).

@@ -19,19 +19,14 @@ export function hasGeminiKey(): boolean {
 }
 
 /**
- * Envia o prompt ao Gemini e devolve o TEXTO da resposta (esperado: JSON).
- * `responseMimeType: application/json` força a IA a responder em JSON.
+ * POST genérico ao :generateContent com retry/backoff nos status transitórios.
+ * Recebe o corpo já serializado e devolve o TEXTO concatenado das partes de resposta.
  */
-export async function callGemini(prompt: string): Promise<string> {
+async function generate(body: string): Promise<string> {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw new Error("GEMINI_API_KEY não definida");
   const model = process.env.GEMINI_MODEL || DEFAULT_MODEL;
-
   const url = `${BASE}/${model}:generateContent`;
-  const body = JSON.stringify({
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
-  });
 
   let res: Response | undefined;
   for (let attempt = 0; attempt <= RETRIES; attempt++) {
@@ -61,7 +56,38 @@ export async function callGemini(prompt: string): Promise<string> {
     .map((p) => p.text)
     .join("");
   if (!text) throw new Error("resposta do Gemini sem texto");
-  return stripFences(text);
+  return text;
+}
+
+/**
+ * Envia o prompt ao Gemini e devolve o TEXTO da resposta (esperado: JSON).
+ * `responseMimeType: application/json` força a IA a responder em JSON.
+ */
+export async function callGemini(prompt: string): Promise<string> {
+  const body = JSON.stringify({
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
+  });
+  return stripFences(await generate(body));
+}
+
+/** Um turno da conversa: quem falou (`user`/`model`) e o texto. */
+export interface ChatTurn {
+  role: "user" | "model";
+  text: string;
+}
+
+/**
+ * Modo CONVERSA (multi-turno). `system` = persona/guardrails + fatos provados
+ * (a âncora anti-alucinação). Devolve TEXTO livre (prosa), não JSON.
+ */
+export async function callGeminiChat(system: string, turns: ChatTurn[]): Promise<string> {
+  const body = JSON.stringify({
+    systemInstruction: { parts: [{ text: system }] },
+    contents: turns.map((t) => ({ role: t.role, parts: [{ text: t.text }] })),
+    generationConfig: { temperature: 0.3 },
+  });
+  return (await generate(body)).trim();
 }
 
 /** Remove cercas de markdown (```json ... ```) caso a IA as inclua. */

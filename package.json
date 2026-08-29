@@ -15,7 +15,8 @@
     "report:java": "node src/cli/report-code.ts java",
     "report:python": "node src/cli/report-code.ts python",
     "report:csharp": "node src/cli/report-code.ts csharp",
-    "explain": "node --env-file-if-exists=.env src/cli/explain.ts"
+    "explain": "node --env-file-if-exists=.env src/cli/explain.ts",
+    "web": "node --env-file-if-exists=.env web/server.ts"
   },
   "dependencies": {
     "pg": "^8.23.0"
